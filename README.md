@@ -35,21 +35,23 @@
 
 ## 快速开始
 
-### 1. 申请麦当劳 MCP Token
+### 0. 前置依赖：麦当劳 MCP 连接器（一次性配置）
 
-访问 [麦当劳 MCP 开放平台](https://open.mcd.cn/mcp)，手机号登录 → 控制台 → 激活并复制 MCP Token。
+本 Skill 的所有点餐能力都来自麦当劳官方 MCP——**没配它，Skill 装了也跑不起来**。
 
-### 2. 在 WorkBuddy 配置 MCP
+- **已在 WorkBuddy 配过麦当劳 MCP 的**：跳过，直接去第 1 步。
+- **首次配置**：
+  1. 访问 [麦当劳 MCP 开放平台](https://open.mcd.cn/mcp)，手机号登录 → 控制台 → 激活并复制 MCP Token（详细图文见[官方指南](https://github.com/M-China/mcd-mcp-server#1-%E7%94%B3%E8%AF%B7-mcp-token)）
+  2. WorkBuddy 左侧【专家·技能·连接器】→【连接器】→【自定义连接器】→【配置MCP】，粘贴本仓库 `mcp-config.example.json` 内容，把 `${MCD_MCP_TOKEN}` 替换为你的真实 Token，保存并启用
+- 其他 MCP 客户端（Cursor / Trae / Cherry Studio 等）：配置方式见官方指南各平台教程，Token 同样只进客户端配置，不进任何文件。
 
-左侧边栏【专家·技能·连接器】→【连接器】→【自定义连接器】→【配置MCP】，粘贴本仓库 `mcp-config.example.json` 内容，把 `${MCD_MCP_TOKEN}` 替换为你的真实 Token，保存并启用。
+> ⚠️ Token 等同你的麦当劳账号凭证：只填在连接器配置里，切勿写进任何会被提交或分享的文件。
 
-> ⚠️ Token 等同账号凭证，切勿提交到任何公开仓库或分享给他人。
+### 1. 安装 Skill
 
-### 3. 导入 Skill
+将本仓库 `skill/` 目录作为技能导入 WorkBuddy（或把 `skill/SKILL.md` 的内容接入任意支持 MCP 的 Agent 作为系统提示词）。
 
-将本仓库 `skill/` 目录作为技能导入 WorkBuddy（或按 SKILL.md 的提示词手动接入任意支持 MCP 的 Agent）。
-
-### 4. 建立你的「老样子」
+### 2. 建立你的「老样子」
 
 第一次点餐时说：「帮我记住这个作为老样子」。之后每次，三个字搞定。
 
