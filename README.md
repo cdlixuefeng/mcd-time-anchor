@@ -35,21 +35,29 @@
 
 ## 快速开始
 
-### 0. 前置依赖：麦当劳 MCP 连接器（一次性配置）
+### 0. 前置依赖：接入麦当劳 MCP（一次性配置）
 
-本 Skill 的所有点餐能力都来自麦当劳官方 MCP——**没配它，Skill 装了也跑不起来**。
+本 Skill 的所有点餐能力都来自麦当劳官方 MCP Server（`https://mcp.mcd.cn`）——**没配它，Skill 装了也跑不起来**。任何支持 MCP 协议（Streamable HTTP）的智能体/客户端都能接入：
 
-- **已在 WorkBuddy 配过麦当劳 MCP 的**：跳过，直接去第 1 步。
-- **首次配置**：
-  1. 访问 [麦当劳 MCP 开放平台](https://open.mcd.cn/mcp)，手机号登录 → 控制台 → 激活并复制 MCP Token（详细图文见[官方指南](https://github.com/M-China/mcd-mcp-server#1-%E7%94%B3%E8%AF%B7-mcp-token)）
-  2. WorkBuddy 左侧【专家·技能·连接器】→【连接器】→【自定义连接器】→【配置MCP】，粘贴本仓库 `mcp-config.example.json` 内容，把 `${MCD_MCP_TOKEN}` 替换为你的真实 Token，保存并启用
-- 其他 MCP 客户端（Cursor / Trae / Cherry Studio 等）：配置方式见官方指南各平台教程，Token 同样只进客户端配置，不进任何文件。
+1. 访问 [麦当劳 MCP 开放平台](https://open.mcd.cn/mcp)，手机号登录 → 控制台 → 激活并复制 MCP Token（详细图文见[官方指南](https://github.com/M-China/mcd-mcp-server#1-%E7%94%B3%E8%AF%B7-mcp-token)）
+2. 在你的智能体中按本仓库 `mcp-config.example.json` 添加 `mcd-mcp` 服务，把 `${MCD_MCP_TOKEN}` 替换为你的真实 Token
 
-> ⚠️ Token 等同你的麦当劳账号凭证：只填在连接器配置里，切勿写进任何会被提交或分享的文件。
+<details>
+<summary><b>以 WorkBuddy 为例</b>（点开）</summary>
 
-### 1. 安装 Skill
+左侧【专家·技能·连接器】→【连接器】→【自定义连接器】→【配置MCP】，粘贴 JSON 并替换 Token，保存后【启用】。
+其他客户端（Cursor / Trae / Cherry Studio / VSCode 等）按各自 MCP 配置入口操作，或参照[官方指南平台教程](https://github.com/M-China/mcd-mcp-server#26-%E5%90%84%E5%B9%B3%E5%8F%B0%E6%8E%A5%E5%85%A5%E6%95%99%E7%A8%8B)。
 
-将本仓库 `skill/` 目录作为技能导入 WorkBuddy（或把 `skill/SKILL.md` 的内容接入任意支持 MCP 的 Agent 作为系统提示词）。
+</details>
+
+> ⚠️ Token 等同你的麦当劳账号凭证：只填在客户端配置里，切勿写进任何会被提交或分享的文件。
+
+### 1. 安装 Skill（通用方法）
+
+本 Skill 的本体就是一份结构化提示词 `skill/SKILL.md`——把它交给任何**已接入麦当劳 MCP** 的智能体即可：
+
+- **通用做法**：将 `SKILL.md` 全文作为智能体的系统提示词 / 自定义指令 / 技能文件装入，并将记忆目录指向本仓库 `skill/` 下的 `memory/`（运行时自动创建）
+- **以 WorkBuddy 为例**：将 `skill/` 目录作为技能导入即可
 
 ### 2. 建立你的「老样子」
 
