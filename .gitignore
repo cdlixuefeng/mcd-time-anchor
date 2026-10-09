@@ -1,0 +1,12 @@
+# 运行时用户记忆（本地数据，禁止提交）
+memory/
+skill/memory/
+
+# 环境与凭证
+.env
+*.local.json
+mcp-config.json
+
+# 系统
+.DS_Store
+Thumbs.db
