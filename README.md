@@ -1,10 +1,18 @@
 # 🍔⏳ 麦味时光锚点 mcd-time-anchor
 
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+![MCP](https://img.shields.io/badge/MCP-McDonald's-e0234e?logo=mcdonalds)
+![Platform](https://img.shields.io/badge/平台-任意支持 MCP 的智能体-blue)
+![Contest](https://img.shields.io/badge/参赛-麦当劳程序员节创意开发大赛-ffc300)
+[![English](https://img.shields.io/badge/English-README_EN-blue)](README_EN.md)
+
 > 一句话点单，自动省钱，还把你的点餐人生记成时光档案。
 >
 > 「老样子。」——三个字，从搜店到最优价订单一气呵成。
+>
+> 说「平行宇宙」，它会替你算：如果每次都走另一条路，你会多花多少钱。
 
-基于 [麦当劳中国 MCP Server](https://github.com/M-China/mcd-mcp-server) 开发的纯对话式点餐 Skill，无 GUI、零学习成本。为「麦当劳程序员节创意开发大赛」而作。
+基于 [麦当劳中国 MCP Server](https://github.com/M-China/mcd-mcp-server) 开发的纯对话式点餐 Skill，无 GUI、零学习成本。为「麦当劳程序员节创意开发大赛」而作。**English: [README_EN.md](README_EN.md)**
 
 ![完整流程演示：老样子 → 下单 → 对账入档 → 平行宇宙](assets/demo-flow.gif)
 
@@ -148,6 +156,7 @@ mcd-time-anchor/
 ├── MCP_INTEGRATION.md           # MCP 对接细节 + 全量实测记录
 ├── mcp-config.example.json      # MCP 配置示例（仅环境变量占位符）
 ├── workbuddy.md                 # WorkBuddy 开发上下文（专项奖励材料）
+├── README_EN.md                 # English README
 ├── skill/
 │   └── SKILL.md                # ⭐ Skill 本体：6 大流程 + 记忆库规范 + 红线
 ├── web/
@@ -156,7 +165,8 @@ mcd-time-anchor/
 │   ├── animated-demo.html       # 自动播放流程演示页
 │   └── memory-profile.example.json  # 示例数据（含 pending/cancelled 真实状态流）
 ├── docs/
-│   └── ISSUE_TEMPLATE.md        # 报名 Issue 模板
+│   ├── ISSUE_TEMPLATE.md        # 报名 Issue 模板
+│   └── PROMO.md                 # 推广文案包（多平台可复制）
 ├── assets/                      # 截图与演示 GIF
 └── scripts/
     └── api-commit.sh            # 开发工具：GitHub API 提交脚本
