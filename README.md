@@ -2,7 +2,7 @@
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 ![MCP](https://img.shields.io/badge/MCP-McDonald's-e0234e?logo=mcdonalds)
-![Platform](https://img.shields.io/badge/平台-任意支持 MCP 的智能体-blue)
+![Platform](https://img.shields.io/badge/平台-任意MCP智能体-blue)
 ![Contest](https://img.shields.io/badge/参赛-麦当劳程序员节创意开发大赛-ffc300)
 [![English](https://img.shields.io/badge/English-README_EN-blue)](README_EN.md)
 
