@@ -1,10 +1,6 @@
 # 🍔⏳ 麦味时光锚点 mcd-time-anchor
 
-![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
-![MCP](https://img.shields.io/badge/MCP-McDonald's-e0234e?logo=mcdonalds)
-![Platform](https://img.shields.io/badge/平台-任意MCP智能体-blue)
-![Contest](https://img.shields.io/badge/参赛-麦当劳程序员节创意开发大赛-ffc300)
-[![English](https://img.shields.io/badge/English-README_EN-blue)](README_EN.md)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) [![MCP](https://img.shields.io/badge/MCP-McDonald's-e0234e?logo=mcdonalds)](https://github.com/M-China/mcd-mcp-server) [![Contest](https://img.shields.io/badge/参赛-麦当劳程序员节创意开发大赛-ffc300)](https://github.com/M-China/mcd-developer-innovation-challenge) [![English](https://img.shields.io/badge/English-README_EN-blue)](README_EN.md)
 
 > 一句话点单，自动省钱，还把你的点餐人生记成时光档案。
 >
