@@ -108,9 +108,9 @@ Skill 启动时自动探测，key 缺失或失效一律静默降级到基础版�
 你：老样子
 AI：🔍 找到你的常用单：板烧鸡腿堡三件套（去冰可乐）
     📍 上次门店：成都锦江区联升巷餐厅（07:00-23:59 营业中）
-    🎟️ 本单可用券：麦旋风任选 → 加 6.9 元换购，总价省 4.5 元
+    🎟️ 已自动匹配最优券：立减 ¥4.5
     ✅ 已生成订单：¥30.0（原价 ¥34.5）
-    👉 支付链接：https://... （3 分钟内有效）
+    👉 支付链接：https://... （15 分钟内有效）
 
 你：我想吃点辣的，随便配，在春熙路
 AI：🌶️ 附近 3 家营业中门店，最近 173 米……
@@ -136,6 +136,31 @@ AI：🌌 价格宇宙：如果每次都走原价直购，这个宇宙的你已�
 - **隐私**：100% 本地渲染，不发起任何网络请求，数据不出这台设备
 
 > 档案真实性同样体现在这里：`pending`（待对账）与 `cancelled`（未支付/取消）的锚点会被明确标注，**不计入任何统计**。
+
+---
+
+## 仓库结构
+
+```text
+mcd-time-anchor/
+├── README.md                    # 本文件
+├── CONTEST_DECLARATION.md       # 参赛声明（官方模板，未修改）
+├── MCP_INTEGRATION.md           # MCP 对接细节 + 全量实测记录
+├── mcp-config.example.json      # MCP 配置示例（仅环境变量占位符）
+├── workbuddy.md                 # WorkBuddy 开发上下文（专项奖励材料）
+├── skill/
+│   └── SKILL.md                # ⭐ Skill 本体：6 大流程 + 记忆库规范 + 红线
+├── web/
+│   └── time-anchor-viewer.html # 时光档案可视化器（双击即用，?demo=1 看演示）
+├── demo/
+│   ├── animated-demo.html       # 自动播放流程演示页
+│   └── memory-profile.example.json  # 示例数据（含 pending/cancelled 真实状态流）
+├── docs/
+│   └── ISSUE_TEMPLATE.md        # 报名 Issue 模板
+├── assets/                      # 截图与演示 GIF
+└── scripts/
+    └── api-commit.sh            # 开发工具：GitHub API 提交脚本
+```
 
 ---
 
