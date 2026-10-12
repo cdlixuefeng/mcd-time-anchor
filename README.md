@@ -6,6 +6,11 @@
 
 基于 [麦当劳中国 MCP Server](https://github.com/M-China/mcd-mcp-server) 开发的纯对话式点餐 Skill，无 GUI、零学习成本。为「麦当劳程序员节创意开发大赛」而作。
 
+![完整流程演示：老样子 → 下单 → 对账入档 → 平行宇宙](assets/demo-flow.gif)
+
+> 上面是完整一轮真实流程：说「老样子」→ Skill 后台调 4 个 MCP 工具生成最优订单 → 说「付了」→ 订单对账后写入时光档案 → 说「平行宇宙」→ 从真实锚点交叉推演。
+> 想自己跑着看：打开 `demo/animated-demo.html`（自动播放，无需点击）。
+
 ---
 
 ## 这是什么

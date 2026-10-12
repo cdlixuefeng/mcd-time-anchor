@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>mcd-time-anchor-demo</title>
+<style>
+  :root {
+    --bg: #faf6f0; --panel: #ffffff; --ink: #2d2418; --ink-soft: #6f6350;
+    --line: #eae0d0; --red: #d62828; --gold: #ffc300; --green: #2e7d32;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "PingFang SC", "Microsoft YaHei", "Segoe UI", system-ui, sans-serif;
+    background: var(--bg); color: var(--ink); width: 900px; height: 780px; overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  .topbar {
+    background: linear-gradient(135deg, #fff8e6, #ffecb3); border-bottom: 1px solid #f0dfae;
+    padding: 10px 20px; display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+  }
+  .topbar .t { font-size: 16px; font-weight: 700; }
+  .topbar .s { font-size: 11px; color: var(--ink-soft); margin-left: auto; }
+  .chat { flex: 1; padding: 18px 22px; display: flex; flex-direction: column; gap: 12px; overflow: hidden; }
+
+  .msg { display: flex; gap: 10px; opacity: 0; transform: translateY(8px); }
+  .msg.show { opacity: 1; transform: none; transition: opacity .35s ease, transform .35s ease; }
+  .avatar {
+    width: 34px; height: 34px; border-radius: 10px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; font-size: 17px;
+  }
+  .avatar.user { background: #efe6d3; }
+  .avatar.ai { background: var(--red); }
+  .bubble {
+    max-width: 560px; background: var(--panel); border: 1px solid var(--line);
+    border-radius: 4px 14px 14px 14px; padding: 10px 14px; font-size: 14px; line-height: 1.7;
+    box-shadow: 0 1px 4px rgba(74,59,50,.06);
+  }
+  .msg.user .bubble { background: #ffe9a8; border-color: #f0d98c; border-radius: 14px 4px 14px 14px; }
+  .bubble b { color: var(--red); }
+  .bubble .dim { color: var(--ink-soft); font-size: 12px; }
+
+  .tools { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .tool {
+    font-size: 11px; font-family: Consolas, monospace; background: #f7f1e5; border: 1px solid #eadfc8;
+    color: #8a6d1f; border-radius: 6px; padding: 2px 8px; opacity: 0; transform: scale(.9);
+  }
+  .tool.show { opacity: 1; transform: none; transition: all .25s ease; }
+  .tool.ok::before { content: "✓ "; color: var(--green); font-weight: 700; }
+
+  .ordercard { border: 1px dashed #d8c9a8; background: #fffdf7; border-radius: 10px; padding: 10px 14px; margin-top: 8px; font-size: 13px; }
+  .ordercard .row { display: flex; justify-content: space-between; padding: 2px 0; }
+  .ordercard .total { border-top: 1px solid var(--line); margin-top: 6px; padding-top: 6px; font-weight: 700; }
+  .ordercard .save { color: var(--green); }
+  .paylink { font-size: 11px; color: #1a6fd4; word-break: break-all; margin-top: 6px; font-family: Consolas, monospace; }
+
+  .anchor {
+    margin-top: 8px; background: linear-gradient(135deg, #2b2136, #4a3560); color: #f3ecff;
+    border-radius: 10px; padding: 10px 14px; font-size: 13px; line-height: 1.8;
+  }
+  .anchor .tag { color: var(--gold); font-weight: 700; }
+
+  .universe { background: linear-gradient(135deg, #2b2136, #4a3560); border-radius: 10px; padding: 12px 16px; color: #f3ecff; font-size: 13px; line-height: 1.9; }
+  .universe b { color: var(--gold); }
+  .universe .q { margin-top: 8px; padding: 8px 12px; background: rgba(255,255,255,.08); border-left: 3px solid var(--gold); border-radius: 0 8px 8px 0; font-size: 12px; color: #e8ddf5; }
+
+  .cursor { display: inline-block; width: 8px; height: 15px; background: var(--red); vertical-align: -2px; animation: blink .7s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .fadeout { transition: opacity .8s ease; opacity: 0 !important; }
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <span style="font-size:19px">🍔⏳</span>
+    <span class="t">麦味时光锚点</span>
+    <span class="s">麦当劳程序员节创意开发大赛 · 演示</span>
+  </div>
+  <div class="chat" id="chat"></div>
+
+<script>
+"use strict";
+const chat = document.getElementById("chat");
+
+function el(html) { const d = document.createElement("div"); d.innerHTML = html.trim(); return d.firstChild; }
+function addUser(text, delay) {
+  return new Promise((res) => setTimeout(() => {
+    chat.appendChild(el(`<div class="msg user" id="m${Date.now()}"><div class="avatar user">🧑</div><div class="bubble">${text}</div></div>`));
+    chat.lastChild.classList.add("show");
+    requestAnimationFrame(() => requestAnimationFrame(() => chat.lastChild.classList.add("show")));
+    res();
+  }, delay));
+}
+function addAI(html, delay) {
+  return new Promise((res) => setTimeout(() => {
+    const m = el(`<div class="msg ai"><div class="avatar ai">🍔</div><div class="bubble">${html}</div></div>`);
+    chat.appendChild(m);
+    requestAnimationFrame(() => requestAnimationFrame(() => m.classList.add("show")));
+    res(m);
+  }, delay));
+}
+function addTools(container, tools, gap) {
+  const wrap = document.createElement("div");
+  wrap.className = "tools";
+  container.querySelector(".bubble").appendChild(wrap);
+  tools.forEach((t, i) => setTimeout(() => {
+    const s = el(`<span class="tool">${t}</span>`);
+    wrap.appendChild(s);
+    requestAnimationFrame(() => requestAnimationFrame(() => s.classList.add("show ok")));
+  }, gap * (i + 1)));
+  return new Promise((res) => setTimeout(res, gap * (tools.length + 1)));
+}
+const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+
+async function play() {
+  chat.innerHTML = "";
+
+  /* ① 老样子 */
+  await addUser("老样子", 600);
+
+  /* ② AI 后台调工具 */
+  const m2 = await addAI(`🔍 找到你的常用单：<b>板烧鸡腿堡三件套</b>（可乐去冰）<span class="dim"> · 联升巷餐厅 · 堂食</span>`, 700);
+  await addTools(m2, ["query-nearby-stores", "query-meals", "query-store-coupons", "calculate-price"], 420);
+
+  /* ③ 订单卡 */
+  const m3 = await addAI(
+    `✅ 已生成订单<div class="ordercard">
+      <div class="row"><span>板烧鸡腿堡三件套 ×1</span><span>¥34.5</span></div>
+      <div class="row"><span>券：麦旋风任选换购</span><span class="save">-¥4.5</span></div>
+      <div class="row total"><span>实付</span><span>¥30.0</span></div>
+      <div class="paylink">https://m.mcd.cn/mcp/scanToPay?orderId=1030…（15 分钟内有效）</div>
+     </div>回「好」下单 · 支付在官方收银台完成`, 500);
+  await wait(1400);
+
+  /* ④ 付了 → 对账入档 */
+  await addUser("付了", 500);
+  const m5 = await addAI(`query-order 核对：订单已支付 ✓`, 700);
+  await addTools(m5, ["query-order → confirmed"], 420);
+  await wait(600);
+  await addAI(
+    `<div class="anchor">📌 时光锚点 +1：2026-10-12 午餐 · 联升巷餐厅 · 板烧鸡腿堡三件套 · 实付 ¥30.0 · <span class="tag">省 ¥4.5</span><br>
+     <span style="font-size:12px;color:#b9a9d4">已对账真实支付，档案只认真实发生的单</span></div>`, 500);
+  await wait(1600);
+
+  /* ⑤ 平行宇宙 */
+  await addUser("平行宇宙", 500);
+  await addAI(
+    `<div class="universe">
+      💸 <b>价格宇宙</b>：如果每单都走原价直购，这个宇宙的你会多花 <b>¥128.5</b><br>
+      🍔 <b>口味宇宙</b>：如果哪次你换了龙焰鸡腿堡……<br>
+      🌧️ <b>场景宇宙</b>：那个雨夜（scene.weather=rain）的你……
+      <div class="q">🌌 但这个宇宙的你省了 ¥51.5，第 10 次吃到熟悉的味道。别的宇宙再好，这里是你真实攒下的。（推演）</div>
+     </div>`, 700);
+  await wait(2600);
+
+  /* 循环 */
+  chat.classList.add("fadeout");
+  await wait(900);
+  chat.classList.remove("fadeout");
+  play();
+}
+play();
+</script>
+</body>
+</html>

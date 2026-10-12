@@ -32,14 +32,21 @@
 
 **本项目未使用**：外送地址类、团餐/助餐类、商城积分兑换类、抽奖类、主题活动预约类工具（保留后续版本扩展空间）。
 
-### 实测状态（诚实口径）
+### 实测状态（2026-10-12 全量实测通过）
 
 | 状态 | 工具 |
 |---|---|
-| ✅ 已实测调通 | `now-time-info`、`query-nearby-stores`、`query-meals`、`query-store-coupons`、`available-coupons` |
-| 🔧 设计已就绪、未实测 | `query-my-coupons`、`calculate-price`、`create-order`、`query-order`、`order-list`、`auto-bind-coupons`、`query-my-account`、`campaign-calendar` |
+| ✅ 已实测调通（只读） | `now-time-info`、`query-nearby-stores`、`query-meals`、`query-store-coupons`、`available-coupons`、`query-my-account`、`query-my-coupons`、`calculate-price`、`order-list`、`query-order` |
+| ✅ 已实测调通（写操作） | `create-order`（测试单已取消）、`cancel-order`、`auto-bind-coupons`（7 张全成功） |
+| 🔧 设计已就绪、未实测 | `campaign-calendar`（增值功能，规划中） |
 
-说明：写操作（`create-order` / `auto-bind-coupons`）会产生真实订单与资产变动，未在联调阶段擅自触发；`calculate-price` 等只读工具的实测安排在产品验收流程中进行。上表口径与仓库状态保持同步，不虚标「已使用」。
+### 实测发现的接口细节（已同步 SKILL.md）
+
+1. **订单状态枚举以 `orderStatus` 文本为准**：文档称待支付=1，实际返回 `orderStatus:"待支付"` + `status:"10"`。对账逻辑改用文本判断，数字码仅参考。
+2. **单位差异**：`calculate-price` 金额单位为分；`create-order` / `query-order` 为元。
+3. **支付链接有效期**：`create-order` 返回 `expirePayTime`，实测约 15 分钟，超时需重新下单。
+4. **`calculate-price` 返回 `takeWayList`**（堂食/外带），`create-order` 到店场景必传 `takeWayCode`。
+5. **`create-order` 不代付**：返回 `payH5Url` 官方支付链接，支付在麦当劳侧完成。
 
 ## 三、核心调用流程
 

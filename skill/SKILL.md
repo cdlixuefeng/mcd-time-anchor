@@ -132,11 +132,13 @@ v3 字段说明：
 
 触发时机：用户说「付了/已支付」时，或**下一次对话首次触发时**（自动检查）。
 
-1. 对 status=pending 的锚点逐个 `query-order(orderId)`：
-   - 订单状态 1/2/4/6（待支付/配餐中/配送中/已完成）→ 视为有效履约，改 `confirmed`，累加 stats
-   - 状态 7（已取消）→ 改 `cancelled`
-   - 待支付且用户确认未付 → 改 `cancelled`，回一句「那这条就不记了，档案里不留没发生的单」
+1. 对 status=pending 的锚点逐个 `query-order(orderId)`，**以 `orderStatus` 文本为准**（`status` 数字码仅参考——MCP 文档枚举与实际返回存在偏差，实测待支付为 `orderStatus:"待支付"` + `status:"10"`）：
+   - `配餐中-已支付` / `配送中` / `已完成` / `已评价` → 有效履约，改 `confirmed`，累加 stats
+   - `已取消` → 改 `cancelled`
+   - 仍是 `待支付` 且用户说已付 → **以接口为准**，保持 pending，提示「订单还是待支付状态，可能支付未完成」，下次继续对账
+   - 仍是 `待支付` 且用户确认未付 → 改 `cancelled`，回一句「那这条就不记了，档案里不留没发生的单」
 2. 连续两次对不上（接口失败）→ 保留 pending，不猜不改，下次继续。
+3. 注意单位差异：`calculate-price` 金额单位为**分**（展示 ÷100），`create-order` / `query-order` 为**元**；支付链接有效期见 `expirePayTime`（实测约 15 分钟），超时需重新下单。
 
 ## 4. 流程 B：自然语言点餐
 
