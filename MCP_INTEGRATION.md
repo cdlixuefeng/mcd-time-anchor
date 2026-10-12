@@ -32,6 +32,15 @@
 
 **本项目未使用**：外送地址类、团餐/助餐类、商城积分兑换类、抽奖类、主题活动预约类工具（保留后续版本扩展空间）。
 
+### 实测状态（诚实口径）
+
+| 状态 | 工具 |
+|---|---|
+| ✅ 已实测调通 | `now-time-info`、`query-nearby-stores`、`query-meals`、`query-store-coupons`、`available-coupons` |
+| 🔧 设计已就绪、未实测 | `query-my-coupons`、`calculate-price`、`create-order`、`query-order`、`order-list`、`auto-bind-coupons`、`query-my-account`、`campaign-calendar` |
+
+说明：写操作（`create-order` / `auto-bind-coupons`）会产生真实订单与资产变动，未在联调阶段擅自触发；`calculate-price` 等只读工具的实测安排在产品验收流程中进行。上表口径与仓库状态保持同步，不虚标「已使用」。
+
 ## 三、核心调用流程
 
 ### 流程 A：老样子极速单
@@ -43,9 +52,9 @@
 4. query-meals(storeCode, orderType=1) → 确认固定餐品在售及现价
 5. query-store-coupons(storeCode)      → 门店可用券
 6. calculate-price(...)                → 多组合比价，输出最省方案
-7. create-order(...)                   → 生成订单 + 官方支付链接
-8. query-order                         → 向用户复述订单明细与省钱金额
-9. 写入时光锚点                         → memory/profile.json 追加锚点记录
+7. create-order(...)                   → 生成订单 + 官方支付链接；同时写 pending 锚点（status=pending，不计入任何统计）
+8. query-order                         → 对账：核实真实支付后锚点转 confirmed（取消/未付转 cancelled，档案不留）
+9. 推演取材                             → 仅 confirmed 锚点进入时光复盘与平行宇宙推演
 ```
 
 ### 流程 B：自然语言点餐（首次/换口味）
@@ -79,7 +88,7 @@
 
 | MCP 原生边界 | 本项目的处理 |
 |---|---|
-| 无法获取用户实时位置 | 不假装能定位。城市/商圈/路段关键词直接走 `searchType=2` 搜索，实测「成都+春熙路」秒级返回门店列表，**无需任何地图 API** |
+| 无法获取用户实时位置 | 基础版用城市/商圈关键词走 `searchType=2` 搜索，实测「成都+春熙路」秒级返回门店列表，无需任何地图 API；增强版可选接入高德/百度地理编码，缺 key 自动回退基础版 |
 | `create-order` 不代付 | 明确告知用户支付在官方收银台完成，订单生成后给出官方支付链接与有效时长 |
 | 历史订单仅近期范围 | 长期画像不依赖 MCP，由 Skill 本地记忆（`memory/profile.json`）从首单起自主积累 |
 | 券规则不承诺可用性 | `query-my-coupons` 仅作资产展示；下单必以 `query-store-coupons` + `calculate-price` 的门店实算结果为准 |
